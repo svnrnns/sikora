@@ -30,13 +30,11 @@ function getFetchingTime(start) {
 }
 
 function processError(error, url, res) {
-  res
-    .status(error.response.status)
-    .send({
-      status: error.response.status,
-      error: error.response.statusText,
-      url: url,
-    });
+  res.status(error.response.status).send({
+    status: error.response.status,
+    error: error.response.statusText,
+    url: url,
+  });
 }
 
 module.exports = {
