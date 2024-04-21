@@ -6,8 +6,7 @@ async function track(url, res) {
     const apiResponse = await fetchTrackData(url);
     res.status(200).send(apiResponse);
   } catch (error) {
-    console.error("Error processing track:", error);
-    res.status(500).send({ error: "Internal Server Error" });
+    data.processError(error, url, res);
   }
 }
 

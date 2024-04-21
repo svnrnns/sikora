@@ -7,8 +7,7 @@ async function handle(url, res) {
     const apiResponse = await fetchGeneralData(url);
     res.status(200).send(apiResponse);
   } catch (error) {
-    console.error("Error processing the url:", error);
-    res.status(500).send({ error: "Internal Server Error" });
+    data.processError(error, url, res);
   }
 }
 

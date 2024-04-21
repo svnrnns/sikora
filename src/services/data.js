@@ -29,4 +29,20 @@ function getFetchingTime(start) {
   return end - start;
 }
 
-module.exports = { generateDataTemplate, getMetatag, getHTML, getFetchingTime };
+function processError(error, url, res) {
+  res
+    .status(error.response.status)
+    .send({
+      status: error.response.status,
+      error: error.response.statusText,
+      url: url,
+    });
+}
+
+module.exports = {
+  generateDataTemplate,
+  getMetatag,
+  getHTML,
+  getFetchingTime,
+  processError,
+};
