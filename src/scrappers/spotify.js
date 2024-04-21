@@ -12,6 +12,8 @@ async function track(url, res) {
 }
 
 async function fetchTrackData(url) {
+  const startFetching = Date.now();
+
   const apiResponse = data.generateDataTemplate(url);
   const html = await data.getHTML(url);
   const $ = cheerio.load(html);
@@ -24,6 +26,7 @@ async function fetchTrackData(url) {
   const cover = data.getMetatag($, "image");
   const audioPreview = data.getMetatag($, "audio");
 
+  apiResponse.fetched = data.getFetchingTime(startFetching);
   apiResponse.data = {
     album,
     release_date: releaseDate,

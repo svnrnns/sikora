@@ -10,6 +10,7 @@ function generateDataTemplate(url) {
   return {
     requested_url: url,
     fetched: new Date(),
+    fetched_in: null,
     status: "FETCHING",
   };
 }
@@ -23,4 +24,9 @@ function getMetatag($, name) {
   );
 }
 
-module.exports = { generateDataTemplate, getMetatag, getHTML };
+function getFetchingTime(start) {
+  const end = Date.now();
+  return end - start;
+}
+
+module.exports = { generateDataTemplate, getMetatag, getHTML, getFetchingTime };
