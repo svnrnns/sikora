@@ -21,7 +21,7 @@ async function fetchProfileData(url) {
   const titleData = data.getMetatag($, "title");
   const { accountName, username } = extractDataFromTitle(titleData);
   const descriptionData = data.getMetatag($, "description");
-  const follows = extractFollowsFromDescription(descriptionData);
+  const follows = extractStats(descriptionData);
 
   apiResponse.fetched = data.getFetchingTime(startFetching);
   apiResponse.data = {
@@ -47,10 +47,31 @@ function extractDataFromTitle(str) {
 
   return {
     accountName: accountName,
-    username: username,
+    username: username.replace("@", ""),
   };
 }
 
-function extractFollowsFromDescription(str) {
-  return str.match(/\d+/g).map(Number);
+function extractStats(str) {
+  const regex =
+    /(\d+(?:\.\d+)?(?:M|K)?)\s*Followers,\s*(\d{1,3}(?:,\d{3})*|\d+)\s*Following,\s*(\d{1,3}(?:,\d{3})*|\d+)\s*Posts/g;
+
+  const matches = str.match(regex);
+  const statData = matches[0].split(", ");
+
+  return processStatData(statData);
+}
+
+function processStatData(statData) {
+  const processedData = [];
+  for (let i = 0; i < statData.length; i++) {
+    let element = statData[i];
+
+    // Replaements
+    element = element.replace("Followers", "");
+    element = element.replace("Following", "");
+    element = element.replace("Posts", "");
+
+    processedData.push(data.formattedToRegularNumber(element));
+  }
+  return processedData;
 }
